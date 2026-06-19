@@ -5,7 +5,7 @@
       "label": "Build XPI (Windows)",
       "type": "shell",
       "command": "pwsh",
-      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "build.ps1"],
+      "args": ["-NoProfile", "-ExecutionPolicy", "RemoteSigned", "-File", "build.ps1"],
       "group": { "kind": "build", "isDefault": true },
       "presentation": { "reveal": "always", "panel": "shared" },
       "problemMatcher": []
