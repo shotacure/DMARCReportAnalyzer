@@ -41,6 +41,7 @@ DNS の認証情報を要求する SaaS ダッシュボードではない。自�
 
 - **IP range classification**: Each source IP range is automatically tagged based on DMARC authentication (DKIM or SPF pass):
   - ✅ **Legitimate** — Has ever passed DMARC authentication. Holding a DKIM private key proves this is an authorized sender.
+  - ⚠️ **Misconfigured** — Has valid signing keys (some messages pass) yet also delivers unauthenticated mail. A real sender with a configuration gap, or stale historical failures.
   - 🛡️ **Blocked** — Never passed authentication, all rejected. Attackers being stopped by your policy.
   - 🔴 **Threat (Unblocked)** — Never passed authentication, yet delivered. Someone is spoofing your domain and getting through.
 - **Adaptive IP aggregation**: Automatically merges IP ranges when multiple /24s share the same /16
@@ -51,7 +52,7 @@ DNS の認証情報を要求する SaaS ダッシュボードではない。自�
 
 - **DKIM signature analysis**: Signing domains, selectors, third-party signature detection
 - **SPF domain analysis**: Authentication domains, mfrom/helo scope tracking with helo-only warnings
-- **Policy recommendations**: Per-domain advice for p=none → reject migration, adkim strict, pct=100, alignment mismatch notes
+- **Policy recommendations**: Per-domain advice for p=none → reject migration, adkim/aspf strict, sp/np subdomain protection, fo failure reporting, pct=100, alignment mismatch notes
 - **Policy override details**: Override reasons with associated IP ranges and forwarder detection
 
 ### Know your domain health — ドメインの健全度を知る
@@ -63,7 +64,9 @@ DNS の認証情報を要求する SaaS ダッシュボードではない。自�
 ### Operational intelligence — 運用インテリジェンス
 
 - **Forensic report cross-reference**: Forensic reports grouped per domain and linked to aggregate IP data
-- **CSV export**: Export all IP range statistics and forensic reports for incident reporting
+- **CSV & JSON export**: Export all IP range statistics and forensic reports for incident reporting (CSV) or SIEM / scripting (JSON)
+- **Sortable tables & click-to-copy**: Sort IP / reporter tables by any column; click an IP range to copy it
+- **Live scan progress**: Processed / total message count shown while scanning
 - **Result caching**: Scan results persist across tab reopens
 
 ---
@@ -79,7 +82,7 @@ DNS の認証情報を要求する SaaS ダッシュボードではない。自�
 - **Subdomain tracking** — Per-subdomain authentication status
 - **Policy override details** — Override reasons with IP range attribution
 - **Forensic cross-reference** — Forensic reports linked to domain sections
-- **CSV export** — IP ranges + forensic data for compliance
+- **CSV & JSON export** — IP ranges + forensic data for compliance (CSV) or machine ingestion (JSON)
 - **Scan period selection** — 1 week / 1 month / 3 months / 6 months / 1 year / all time
 - **Dark mode** — Full dark mode following system preference
 - **i18n** — 12 languages: English, Japanese, German, French, Spanish, Italian, Korean, Chinese (Simplified/Traditional), Portuguese (BR), Russian, Arabic
@@ -115,6 +118,15 @@ Route reports with mail filters by `To:` address.
 2. Build: `./build.sh` (Linux/macOS) or `pwsh build.ps1` (Windows)
 3. Install in Thunderbird: Tools → Add-ons → Install Add-on From File
 
+### Tests / テスト
+
+```
+npm test
+```
+
+Unit tests run on Node's built-in test runner (no extra dependencies) and cover the
+parser aggregation accuracy, source classification, and policy-advice logic.
+
 ---
 
 ## Architecture / アーキテクチャ
@@ -131,13 +143,19 @@ parser/
 │                            deliveredPass/Fail classification, DKIM signature analysis,
 │                            SPF domain analysis, envelope alignment detection,
 │                            subdomain tracking, override detail attribution
-└─ fr_parser.js             RFC 6591 forensic report parser with validation
+├─ fr_parser.js             RFC 6591 forensic report parser with validation
+└─ analysis.js              Pure analysis logic (source classification incl.
+                             "misconfigured", policy advice for p/sp/adkim/aspf/np/
+                             pct/fo) — shared by dashboard, covered by unit tests
 dashboard/
-├─ dashboard.html           Full-tab dashboard UI with export button
+├─ dashboard.html           Full-tab dashboard UI with export buttons & domain filter
 ├─ dashboard.css            CSS variables, dark mode, 8-column grid, IP/health tags,
 │                            collapsible sections, pie/line charts, advice boxes
 └─ dashboard.js             Rendering logic — all analysis views, period comparison,
-│                            CSV export, warning translation
+│                            CSV/JSON export, sortable tables, scan progress
+test/
+├─ analysis.test.js         Classification & policy-advice tests
+└─ parser.test.js           Aggregation accuracy & summary tests
 options/
 ├─ options.html             Settings page
 └─ options.js               Folder selection & persistence

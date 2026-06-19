@@ -391,5 +391,29 @@
   },
   "adviceAlignNote": {
     "message": "對齊不一致"
+  },
+  "btnExportJson": {
+    "message": "匯出 JSON"
+  },
+  "filterDomains": {
+    "message": "篩選網域…"
+  },
+  "statusScanningProgress": {
+    "message": "正在掃描 #1 / #2 (#3)…"
+  },
+  "copyHint": {
+    "message": "點擊複製"
+  },
+  "adviceAspfRelaxed": {
+    "message": "SPF 對齊設定為 relaxed (aspf=r)。為獲得更強保護，建議使用嚴格對齊 (aspf=s)。"
+  },
+  "adviceSpWeak": {
+    "message": "子網域政策 (sp=#1) 弱於網域政策 (p=#2)，子網域保護較弱——建議設定 sp=#2。"
+  },
+  "adviceNpMissing": {
+    "message": "未設定針對不存在子網域的政策 (np=)。建議設定 np=reject 以阻擋對不存在子網域的偽造。"
+  },
+  "adviceFo": {
+    "message": "失敗報告設定為 fo=0（僅當 SPF 與 DKIM 皆失敗時回報）。建議設定 fo=1 以捕捉任何驗證失敗。"
   }
 }

@@ -391,5 +391,29 @@
   },
   "adviceAlignNote": {
     "message": "アライメント非整合あり"
+  },
+  "btnExportJson": {
+    "message": "JSONエクスポート"
+  },
+  "filterDomains": {
+    "message": "ドメインを絞り込み…"
+  },
+  "statusScanningProgress": {
+    "message": "スキャン中 #1 / #2 (#3)…"
+  },
+  "copyHint": {
+    "message": "クリックでコピー"
+  },
+  "adviceAspfRelaxed": {
+    "message": "SPFアライメントが relaxed (aspf=r) です。より強固な保護のために strict (aspf=s) への変更を検討してください。"
+  },
+  "adviceSpWeak": {
+    "message": "サブドメインポリシー (sp=#1) が主ポリシー (p=#2) より弱く、サブドメインの保護が手薄です。sp=#2 への変更を検討してください。"
+  },
+  "adviceNpMissing": {
+    "message": "存在しないサブドメインに対するポリシー (np=) が未設定です。実在しないサブドメインの詐称を防ぐため np=reject を検討してください。"
+  },
+  "adviceFo": {
+    "message": "失敗レポートが fo=0 です (SPFとDKIMの両方が失敗した場合のみ報告)。あらゆる認証失敗を捕捉するため fo=1 を検討してください。"
   }
 }

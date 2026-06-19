@@ -40,6 +40,7 @@ Copy-Item -Force "options/options.html"      (Join-Path $stageDir "options")
 Copy-Item -Force "options/options.js"        (Join-Path $stageDir "options")
 Copy-Item -Force "parser/ar_parser.js"       (Join-Path $stageDir "parser")
 Copy-Item -Force "parser/fr_parser.js"       (Join-Path $stageDir "parser")
+Copy-Item -Force "parser/analysis.js"        (Join-Path $stageDir "parser")
 
 # --- lib ディレクトリ (存在する場合のみ) ---
 $libFiles = Get-ChildItem "lib/*.js" -ErrorAction SilentlyContinue

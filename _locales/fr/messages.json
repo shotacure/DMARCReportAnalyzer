@@ -391,5 +391,29 @@
   },
   "adviceAlignNote": {
     "message": " : non-alignement détecté"
+  },
+  "btnExportJson": {
+    "message": "Exporter JSON"
+  },
+  "filterDomains": {
+    "message": "Filtrer les domaines…"
+  },
+  "statusScanningProgress": {
+    "message": "Analyse #1 / #2 (#3)…"
+  },
+  "copyHint": {
+    "message": "Cliquer pour copier"
+  },
+  "adviceAspfRelaxed": {
+    "message": "L'alignement SPF est défini sur relaxed (aspf=r). Envisagez un alignement strict (aspf=s) pour une meilleure protection."
+  },
+  "adviceSpWeak": {
+    "message": "La politique de sous-domaine (sp=#1) est plus faible que la politique du domaine (p=#2). Les sous-domaines sont moins protégés — envisagez sp=#2."
+  },
+  "adviceNpMissing": {
+    "message": "Aucune politique pour les sous-domaines inexistants (np=) n'est définie. Envisagez np=reject pour bloquer l'usurpation de sous-domaines inexistants."
+  },
+  "adviceFo": {
+    "message": "Les rapports d'échec sont définis sur fo=0 (rapport uniquement si SPF et DKIM échouent). Envisagez fo=1 pour capturer tout échec d'authentification."
   }
 }

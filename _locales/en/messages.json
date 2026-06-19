@@ -391,5 +391,29 @@
   },
   "adviceAlignNote": {
     "message": " alignment mismatch detected"
+  },
+  "btnExportJson": {
+    "message": "Export JSON"
+  },
+  "filterDomains": {
+    "message": "Filter domains…"
+  },
+  "statusScanningProgress": {
+    "message": "Scanning #1 / #2 (#3)…"
+  },
+  "copyHint": {
+    "message": "Click to copy"
+  },
+  "adviceAspfRelaxed": {
+    "message": "SPF alignment is set to relaxed (aspf=r). Consider strict alignment (aspf=s) for stronger protection."
+  },
+  "adviceSpWeak": {
+    "message": "Subdomain policy (sp=#1) is weaker than the domain policy (p=#2). Subdomains are less protected — consider sp=#2."
+  },
+  "adviceNpMissing": {
+    "message": "No policy for non-existent subdomains (np=) is set. Consider np=reject to block spoofing of non-existent subdomains."
+  },
+  "adviceFo": {
+    "message": "Failure reporting is set to fo=0 (reports only when both SPF and DKIM fail). Consider fo=1 to capture any authentication failure."
   }
 }

@@ -42,6 +42,7 @@ cp options/options.html        "${STAGE_DIR}/options/"
 cp options/options.js          "${STAGE_DIR}/options/"
 cp parser/ar_parser.js         "${STAGE_DIR}/parser/"
 cp parser/fr_parser.js         "${STAGE_DIR}/parser/"
+cp parser/analysis.js          "${STAGE_DIR}/parser/"
 
 # --- lib ディレクトリ (存在する場合のみ) ---
 if ls lib/*.js 1>/dev/null 2>&1; then

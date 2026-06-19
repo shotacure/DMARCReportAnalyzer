@@ -1,4 +1,4 @@
-/* DMARCReportAnalyzer - dashboard.css v1.0.6 */
+/* DMARCReportAnalyzer - dashboard.css (version は manifest.json を参照) */
 
 :root {
   --drv-bg: #f5f6f8; --drv-surface: #ffffff; --drv-border: #ddd;
@@ -195,3 +195,18 @@ body { font-family: "Segoe UI", Meiryo, sans-serif; background: var(--drv-bg); c
 
 .drv-spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--drv-border); border-top-color: var(--drv-accent); border-radius: 50%; animation: drv-spin 0.6s linear infinite; vertical-align: middle; margin-right: 6px; }
 @keyframes drv-spin { to { transform: rotate(360deg); } }
+
+/* ドメインクイックフィルタ */
+.drv-domain-filter { padding: 5px 8px; border: 1px solid var(--drv-border); border-radius: 4px; font-size: 12px; font-family: inherit; background: var(--drv-surface); color: var(--drv-text); width: 150px; }
+.drv-domain-filter:focus { outline: none; border-color: var(--drv-accent); }
+
+/* クリックでコピー可能なセル */
+.drv-copyable { cursor: pointer; border-radius: 3px; transition: background 0.15s; }
+.drv-copyable:hover { background: var(--drv-table-hover); outline: 1px dotted var(--drv-accent); }
+.drv-copyable.drv-copied { background: var(--drv-status-bg); color: var(--drv-status-text); }
+
+/* 並べ替え可能なテーブルヘッダ */
+.drv-sortable th[data-sortable] { cursor: pointer; user-select: none; }
+.drv-sortable th[data-sortable]:hover { color: var(--drv-accent); }
+.drv-sortable th[data-sort-dir]::after { content: "▲"; font-size: 8px; margin-left: 4px; vertical-align: middle; }
+.drv-sortable th[data-sort-dir="desc"]::after { content: "▼"; }
