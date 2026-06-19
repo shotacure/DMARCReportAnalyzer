@@ -391,5 +391,29 @@
   },
   "adviceAlignNote": {
     "message": " 정렬 불일치 감지"
+  },
+  "btnExportJson": {
+    "message": "JSON 내보내기"
+  },
+  "filterDomains": {
+    "message": "도메인 필터…"
+  },
+  "statusScanningProgress": {
+    "message": "스캔 중 #1 / #2 (#3)…"
+  },
+  "copyHint": {
+    "message": "클릭하여 복사"
+  },
+  "adviceAspfRelaxed": {
+    "message": "SPF 정렬이 relaxed(aspf=r)로 설정되어 있습니다. 더 강력한 보호를 위해 strict(aspf=s)를 고려하세요."
+  },
+  "adviceSpWeak": {
+    "message": "하위 도메인 정책(sp=#1)이 도메인 정책(p=#2)보다 약합니다. 하위 도메인이 덜 보호됩니다 — sp=#2를 고려하세요."
+  },
+  "adviceNpMissing": {
+    "message": "존재하지 않는 하위 도메인에 대한 정책(np=)이 설정되어 있지 않습니다. 존재하지 않는 하위 도메인 사칭을 차단하려면 np=reject를 고려하세요."
+  },
+  "adviceFo": {
+    "message": "실패 보고가 fo=0으로 설정되어 있습니다(SPF와 DKIM이 모두 실패한 경우에만 보고). 모든 인증 실패를 포착하려면 fo=1을 고려하세요."
   }
 }

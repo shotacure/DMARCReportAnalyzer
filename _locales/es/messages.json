@@ -391,5 +391,29 @@
   },
   "adviceAlignNote": {
     "message": " : desalineación detectada"
+  },
+  "btnExportJson": {
+    "message": "Exportar JSON"
+  },
+  "filterDomains": {
+    "message": "Filtrar dominios…"
+  },
+  "statusScanningProgress": {
+    "message": "Escaneando #1 / #2 (#3)…"
+  },
+  "copyHint": {
+    "message": "Haz clic para copiar"
+  },
+  "adviceAspfRelaxed": {
+    "message": "La alineación SPF está en relaxed (aspf=r). Considera la alineación estricta (aspf=s) para mayor protección."
+  },
+  "adviceSpWeak": {
+    "message": "La política de subdominios (sp=#1) es más débil que la política del dominio (p=#2). Los subdominios están menos protegidos — considera sp=#2."
+  },
+  "adviceNpMissing": {
+    "message": "No hay política para subdominios inexistentes (np=). Considera np=reject para bloquear la suplantación de subdominios inexistentes."
+  },
+  "adviceFo": {
+    "message": "Los informes de fallos están en fo=0 (informa solo cuando fallan SPF y DKIM). Considera fo=1 para capturar cualquier fallo de autenticación."
   }
 }

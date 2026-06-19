@@ -22,8 +22,12 @@
           <option value="0" data-i18n="periodAll">All</option>
         </select>
         <button id="btn-scan" class="drv-btn drv-btn-primary" data-i18n="btnScan">Scan Reports</button>
+        <!-- ドメイン名クイックフィルタ (ドメインが2つ以上ある場合のみ表示) -->
+        <input id="domain-filter" type="search" class="drv-domain-filter drv-hidden" data-i18n-placeholder="filterDomains" placeholder="Filter domains…">
         <!-- CSV エクスポートボタン (スキャン結果がある場合のみ有効) -->
         <button id="btn-export" class="drv-btn drv-btn-secondary drv-hidden" data-i18n="btnExport">Export CSV</button>
+        <!-- JSON エクスポートボタン (SIEM/スクリプト連携用) -->
+        <button id="btn-export-json" class="drv-btn drv-btn-secondary drv-hidden" data-i18n="btnExportJson">Export JSON</button>
         <!-- 全展開/全折りたたみボタン (ドメインセクションがある場合のみ表示) -->
         <button id="btn-toggle-all" class="drv-btn drv-btn-secondary drv-hidden" data-i18n="btnCollapseAll">Collapse All</button>
         <button id="btn-settings" class="drv-btn drv-btn-secondary" data-i18n="btnSettings">Settings</button>
@@ -77,6 +81,7 @@
       <span data-i18n="privacyNote">All processing is local.</span>
     </div>
   </div>
+  <script src="../parser/analysis.js"></script>
   <script src="dashboard.js"></script>
 </body>
 </html>

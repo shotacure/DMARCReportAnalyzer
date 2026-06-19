@@ -177,11 +177,22 @@ const ArParser = (() => {
 
   // =========================================================
   // XML サニタイズ: ISP 固有の XML 不整合を DOMParser に渡す前に修正
+  // 現場の集約レポートは ISP ごとに細かな破損があるため、
+  // DOMParser が parsererror を返す前に既知のパターンを正規化する。
   // =========================================================
   const sanitizeXml = (xmlText) => {
-    let sanitized = xmlText;
-    // Microsoft の既知の typo: <diskim> → <dkim>
-    sanitized = sanitized.replace(/<diskim>/g, "<dkim>");
+    let sanitized = String(xmlText);
+    // UTF-8 BOM を除去 (先頭に残ると DOMParser が稀に失敗する)
+    if (sanitized.charCodeAt(0) === 0xFEFF) sanitized = sanitized.slice(1);
+    // 宣言前の先頭空白・制御文字を除去 (<?xml または < より前のゴミ)
+    sanitized = sanitized.replace(/^[\s﻿\x00-\x1F]+(?=<)/, "");
+    // XML 1.0 で不正な制御文字を除去 (TAB/LF/CR を除く C0 制御文字)
+    sanitized = sanitized.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, "");
+    // Microsoft の既知の typo: <diskim> → <dkim> (開きタグ・閉じタグ両方)
+    sanitized = sanitized.replace(/<(\/?)diskim>/g, "<$1dkim>");
+    // エンティティ化されていない裸の & を &amp; に修正
+    // (有効な &name; / &#10; / &#x1F; のみ温存)
+    sanitized = sanitized.replace(/&(?!(?:[a-zA-Z][a-zA-Z0-9]*|#\d+|#x[0-9a-fA-F]+);)/g, "&amp;");
     return sanitized;
   };
 
@@ -572,29 +583,20 @@ const ArParser = (() => {
       const dCount = domains.get(report.policy.domain) || 0;
       domains.set(report.policy.domain, dCount + s.totalCount);
 
-      for (const ipEntry of s.topSourceIps) {
-        const existing = sourceIps.get(ipEntry.ip) || 0;
-        sourceIps.set(ipEntry.ip, existing + ipEntry.count);
-      }
-
-      for (const entry of s.topIpRanges) {
-        ipRangeEntries.push({
-          key: entry.key, count: entry.count,
-          dkimPass: entry.dkimPass, spfPass: entry.spfPass, fullPass: entry.fullPass,
-          dmarcPass: entry.dmarcPass || 0,
-          deliveredPass: entry.deliveredPass, deliveredFail: entry.deliveredFail,
-          quarantine: entry.quarantine, reject: entry.reject
-        });
-      }
-
+      // 送信元 IP / IP 範囲 / レポーター別の統計は、各レポートで上位 N 件に
+      // 切り詰められた summary ではなく生レコードから再集計する。
+      // summary 経由だと「単一レポートでは少量だが多数のレポートに分散する
+      // 送信元」が二重トランケーション (per-report top-N → aggregate top-N) で
+      // 欠落し、分散スプーフィングを取りこぼすため。
       for (const rec of report.records) {
         const isDkimPass = rec.dkimPolicyResult === "pass";
         const isSpfPass = rec.spfPolicyResult === "pass";
         const isFullPass = isDkimPass && isSpfPass;
         const isDmarcPass = isDkimPass || isSpfPass;
         const isDelivered = rec.disposition !== "quarantine" && rec.disposition !== "reject";
-        reporterEntries.push({
-          key: report.reporter.orgName, count: rec.count,
+
+        const stat = {
+          count: rec.count,
           dkimPass: isDkimPass ? rec.count : 0,
           spfPass: isSpfPass ? rec.count : 0,
           fullPass: isFullPass ? rec.count : 0,
@@ -603,7 +605,14 @@ const ArParser = (() => {
           deliveredFail: (isDelivered && !isDmarcPass) ? rec.count : 0,
           quarantine: rec.disposition === "quarantine" ? rec.count : 0,
           reject: rec.disposition === "reject" ? rec.count : 0
-        });
+        };
+
+        // 送信元 IP は完全な解像度で集計 (uniqueSourceIps を正確にするため)
+        sourceIps.set(rec.sourceIp, (sourceIps.get(rec.sourceIp) || 0) + rec.count);
+        // IP 範囲 (Class C / IPv6 /48) — 後段で mergeIpRanges に渡す
+        ipRangeEntries.push({ key: toIpRange(rec.sourceIp), ...stat });
+        // レポーター別
+        reporterEntries.push({ key: report.reporter.orgName, ...stat });
       }
 
       for (const reason of s.overrideReasons) {
@@ -728,5 +737,8 @@ const ArParser = (() => {
     };
   };
 
-  return { parse, computeSummary, aggregateSummaries, toIpRange };
+  return { parse, computeSummary, aggregateSummaries, toIpRange, sanitizeXml };
 })();
+
+// Node (テスト) 用エクスポート。ブラウザでは module が未定義のため無視される。
+if (typeof module !== "undefined" && module.exports) module.exports = ArParser;

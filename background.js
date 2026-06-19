@@ -118,9 +118,13 @@ const resolveFolders = async (settings) => {
 };
 
 // =========================================================
-// メッセージスキャン: 指定フォルダ内の全メッセージを取得
+// メッセージスキャン: 指定フォルダ内のメッセージを取得
+// sinceMs を渡すと、対応バージョン (TB121+) ではサーバ/DB 側で日付を
+// 絞り込み、フォルダ全件の列挙を避けて高速化する。
+// 古いバージョン (folder.id を持たない) や query 非対応時は全件取得に
+// フォールバックする (date は呼び出し側で再フィルタされるため安全)。
 // =========================================================
-const listMessagesInFolder = async (accountId, path) => {
+const listMessagesInFolder = async (accountId, path, sinceMs = 0) => {
   const accounts = await browser.accounts.list();
   const account = accounts.find(a => a.id === accountId);
   if (!account) return [];
@@ -133,11 +137,28 @@ const listMessagesInFolder = async (accountId, path) => {
   };
   const folder = findFolder(account.folders, path);
   if (!folder) return [];
+
+  let page = null;
+  // folder.id は TB121+ で付与され、同バージョンで query({folderId,...}) が使える。
+  // id が無いバージョンに folderId を渡すと全フォルダ検索になり得るため必ず存在チェック。
+  if (sinceMs > 0 && folder.id && browser.messages.query) {
+    try {
+      page = await browser.messages.query({ folderId: folder.id, fromDate: new Date(sinceMs) });
+    } catch (e) { page = null; }
+  }
+  if (!page) page = await browser.messages.list(folder);
+
   const messages = [];
-  let page = await browser.messages.list(folder);
   messages.push(...page.messages);
   while (page.id) { page = await browser.messages.continueList(page.id); messages.push(...page.messages); }
   return messages;
+};
+
+// =========================================================
+// スキャン進捗を dashboard へ通知 (受信側がいなくてもエラーにしない)
+// =========================================================
+const notifyProgress = (phase, done, total) => {
+  browser.runtime.sendMessage({ type: "scanProgress", phase, done, total }).catch(() => {});
 };
 
 // =========================================================
@@ -237,8 +258,12 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (settings.arFolderId) {
           try {
             const { accountId, path } = settings.arFolderId;
-            const messages = await listMessagesInFolder(accountId, path);
+            const messages = await listMessagesInFolder(accountId, path, scanSinceMs);
+            const arTotal = messages.length;
+            let arProcessed = 0;
             for (const msg of messages) {
+              arProcessed++;
+              if (arProcessed % 25 === 0 || arProcessed === arTotal) notifyProgress("aggregate", arProcessed, arTotal);
               if (scanSinceMs > 0 && msg.date && msg.date.getTime() < scanSinceMs) continue;
               try {
                 const attachments = await extractReportAttachments(msg.id);
@@ -278,8 +303,12 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (settings.frFolderId) {
           try {
             const { accountId, path } = settings.frFolderId;
-            const messages = await listMessagesInFolder(accountId, path);
+            const messages = await listMessagesInFolder(accountId, path, sinceMs);
+            const frTotal = messages.length;
+            let frProcessed = 0;
             for (const msg of messages) {
+              frProcessed++;
+              if (frProcessed % 25 === 0 || frProcessed === frTotal) notifyProgress("forensic", frProcessed, frTotal);
               if (sinceMs > 0 && msg.date && msg.date.getTime() < sinceMs) continue;
               try {
                 const full = await browser.messages.getFull(msg.id);

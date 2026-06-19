@@ -391,5 +391,29 @@
   },
   "adviceAlignNote": {
     "message": " : عدم توافق"
+  },
+  "btnExportJson": {
+    "message": "تصدير JSON"
+  },
+  "filterDomains": {
+    "message": "تصفية النطاقات…"
+  },
+  "statusScanningProgress": {
+    "message": "جارٍ الفحص #1 / #2 (#3)…"
+  },
+  "copyHint": {
+    "message": "انقر للنسخ"
+  },
+  "adviceAspfRelaxed": {
+    "message": "محاذاة SPF مضبوطة على relaxed (aspf=r). فكّر في المحاذاة الصارمة (aspf=s) لحماية أقوى."
+  },
+  "adviceSpWeak": {
+    "message": "سياسة النطاق الفرعي (sp=#1) أضعف من سياسة النطاق (p=#2). النطاقات الفرعية أقل حماية — فكّر في sp=#2."
+  },
+  "adviceNpMissing": {
+    "message": "لا توجد سياسة للنطاقات الفرعية غير الموجودة (np=). فكّر في np=reject لمنع انتحال النطاقات الفرعية غير الموجودة."
+  },
+  "adviceFo": {
+    "message": "تقارير الفشل مضبوطة على fo=0 (تقرير فقط عند فشل SPF وDKIM معًا). فكّر في fo=1 لالتقاط أي فشل في المصادقة."
   }
 }
