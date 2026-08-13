@@ -87,10 +87,9 @@ const Analysis = (() => {
     // --- pct < 100: 一部にしか適用されていない ---
     if (Number(policy.pct) < 100) advices.push({ level: "warn", key: "advicePctPartial", args: [policy.pct] });
 
-    // --- 失敗レポート fo=: 強制運用中に fo=0 だと片側失敗を取りこぼす ---
-    if (p !== "none" && (policy.fo || "0") === "0") {
-      advices.push({ level: "warn", key: "adviceFo" });
-    }
+    // 失敗レポート fo= は助言しない。policy_published の <fo> は省略するレポーターが
+    // 多く、省略と fo=0 を区別できないため誤検知になる。加えて ruf= 自体が
+    // 送られてくること自体が稀で、fo=1 を勧める実益がほとんどない。
 
     return advices;
   };

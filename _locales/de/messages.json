@@ -412,8 +412,5 @@
   },
   "adviceNpMissing": {
     "message": "Es ist keine Richtlinie für nicht existierende Subdomains (np=) gesetzt. Erwägen Sie np=reject, um Spoofing nicht existierender Subdomains zu blockieren."
-  },
-  "adviceFo": {
-    "message": "Fehlerberichte sind auf fo=0 gesetzt (Bericht nur, wenn SPF und DKIM fehlschlagen). Erwägen Sie fo=1, um jeden Authentifizierungsfehler zu erfassen."
   }
 }

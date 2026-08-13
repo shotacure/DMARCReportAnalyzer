@@ -412,8 +412,5 @@
   },
   "adviceNpMissing": {
     "message": "No policy for non-existent subdomains (np=) is set. Consider np=reject to block spoofing of non-existent subdomains."
-  },
-  "adviceFo": {
-    "message": "Failure reporting is set to fo=0 (reports only when both SPF and DKIM fail). Consider fo=1 to capture any authentication failure."
   }
 }

@@ -5,6 +5,16 @@ All notable changes to **DMARC Report Analyzer** are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-08-13
+
+### Removed
+- **`fo=0` policy advice** — the suggestion to switch to `fo=1` has been dropped.
+  The value came from the aggregate report's `<policy_published>`, where many
+  reporters omit `<fo>` entirely; an omitted element was indistinguishable from
+  an explicit `fo=0`, so the warning fired on domains that do publish `fo=1`.
+  Failure (`ruf`) reports are also rarely sent in practice, making the advice
+  low-value even when correct.
+
 ## [1.1.0] - 2026-06-20
 
 ### Added

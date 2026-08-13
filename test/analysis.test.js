@@ -87,10 +87,10 @@ test("computePolicyAdvice: pct<100 は args に pct を持つ", () => {
   assert.deepEqual(adv.args, [50]);
 });
 
-test("computePolicyAdvice: 強制運用中の fo=0 で adviceFo", () => {
+test("computePolicyAdvice: fo=0 では助言しない (レポーターの <fo> 省略と区別できないため)", () => {
   const a = Analysis.computePolicyAdvice({ deliveredFailCount: 0, rejectCount: 0 },
     { p: "reject", sp: "reject", adkim: "s", aspf: "s", pct: 100, fo: "0", np: "reject" });
-  assert.ok(keysOf(a).includes("adviceFo"));
+  assert.equal(keysOf(a).includes("adviceFo"), false);
 });
 
 test("computePolicyAdvice: 完全クリーンな p=reject は advicePRejectClean (alignParts 付き)", () => {
