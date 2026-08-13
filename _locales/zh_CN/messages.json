@@ -412,8 +412,5 @@
   },
   "adviceNpMissing": {
     "message": "未设置针对不存在子域的策略 (np=)。建议设置 np=reject 以阻止对不存在子域的伪造。"
-  },
-  "adviceFo": {
-    "message": "失败报告设置为 fo=0（仅当 SPF 和 DKIM 均失败时报告）。建议设置 fo=1 以捕获任何认证失败。"
   }
 }

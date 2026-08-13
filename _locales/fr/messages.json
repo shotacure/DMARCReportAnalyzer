@@ -412,8 +412,5 @@
   },
   "adviceNpMissing": {
     "message": "Aucune politique pour les sous-domaines inexistants (np=) n'est définie. Envisagez np=reject pour bloquer l'usurpation de sous-domaines inexistants."
-  },
-  "adviceFo": {
-    "message": "Les rapports d'échec sont définis sur fo=0 (rapport uniquement si SPF et DKIM échouent). Envisagez fo=1 pour capturer tout échec d'authentification."
   }
 }

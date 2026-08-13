@@ -412,8 +412,5 @@
   },
   "adviceNpMissing": {
     "message": "Nessuna policy per i sottodomini inesistenti (np=) è impostata. Valuta np=reject per bloccare lo spoofing di sottodomini inesistenti."
-  },
-  "adviceFo": {
-    "message": "I report di errore sono impostati su fo=0 (report solo se falliscono sia SPF che DKIM). Valuta fo=1 per catturare qualsiasi errore di autenticazione."
   }
 }

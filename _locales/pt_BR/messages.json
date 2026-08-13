@@ -412,8 +412,5 @@
   },
   "adviceNpMissing": {
     "message": "Nenhuma política para subdomínios inexistentes (np=) está definida. Considere np=reject para bloquear a falsificação de subdomínios inexistentes."
-  },
-  "adviceFo": {
-    "message": "Os relatórios de falha estão definidos como fo=0 (relata apenas quando SPF e DKIM falham). Considere fo=1 para capturar qualquer falha de autenticação."
   }
 }

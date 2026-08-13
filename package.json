@@ -1,6 +1,6 @@
 {
   "name": "dmarc-report-analyzer",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Analyze DMARC aggregate and forensic reports locally within Thunderbird.",
   "private": true,
   "license": "GPL-3.0-or-later",
